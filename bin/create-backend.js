@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
-import fs from 'fs';
-import path from 'path';
-import prompts from 'prompts';
-import { execSync } from 'child_process';
+import fs from "fs";
+import path from "path";
+import prompts from "prompts";
+import { execSync } from "child_process";
 
 const layerBasedStructure = {
   controllers: {},
@@ -24,11 +24,11 @@ const layerBasedStructure = {
 const modularStructure = {
   modules: {
     user: {
-      'user.controller.ts': '',
-      'user.service.ts': '',
-      'user.repository.ts': '',
-      'user.routes.ts': '',
-      'user.spec.ts': '',
+      "user.controller.ts": "",
+      "user.service.ts": "",
+      "user.repository.ts": "",
+      "user.routes.ts": "",
+      "user.spec.ts": "",
     },
     auth: {},
     product: {},
@@ -83,7 +83,7 @@ function createFolderRecursive(basePath, structure) {
   for (const key in structure) {
     const newPath = path.join(basePath, key);
     if (!fs.existsSync(newPath)) {
-      if (key.includes('.')) {
+      if (key.includes(".")) {
         // It's a file
         fs.writeFileSync(newPath, structure[key]);
       } else {
@@ -91,7 +91,7 @@ function createFolderRecursive(basePath, structure) {
         fs.mkdirSync(newPath);
       }
     }
-    if (typeof structure[key] === 'object' && !key.includes('.')) {
+    if (typeof structure[key] === "object" && !key.includes(".")) {
       createFolderRecursive(newPath, structure[key]);
     }
   }
@@ -106,6 +106,7 @@ function packageJsonContent(projectName) {
   "name": "${projectName}",
   "version": "1.0.0",
   "main": "dist/app.js",
+  "type": "module",
   "scripts": {
     "start": "node dist/app.js",
     "build": "tsc",
@@ -116,7 +117,9 @@ function packageJsonContent(projectName) {
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
     "format": "prettier --write .",
-    "prepare": "git rev-parse --is-inside-work-tree >/dev/null 2>&1 && husky install || echo 'Skipping husky install (not a Git repository)'"
+    "prepare": "node -e \\"try { require.resolve('husky') && require('child_process').execSync('npx husky install') } catch(e) { console.log('Husky not installed, skipping hooks setup') }\\"",
+    "audit:fix": "npm audit fix",
+    "audit:prod": "npm audit --omit=dev"
   },
   "dependencies": {
     "express": "^4.18.2",
@@ -124,50 +127,74 @@ function packageJsonContent(projectName) {
     "cors": "^2.8.5",
     "helmet": "^7.1.0",
     "morgan": "^1.10.0",
-    "winston": "^3.10.0"
+    "winston": "^3.11.0",
+    "superagent": "^9.0.0"
   },
   "devDependencies": {
-    "@types/express": "^4.17.17",
-    "@types/jest": "^29.5.4",
-    "@types/node": "^20.5.7",
+    "@types/express": "^4.17.21",
+    "@types/cors": "^2.8.17",
+    "@types/morgan": "^1.9.9",
+    "@types/jest": "^29.5.12",
+    "@types/node": "^20.12.7",
     "@types/supertest": "^2.0.12",
-    "@typescript-eslint/eslint-plugin": "^6.5.1",
-    "@typescript-eslint/parser": "^6.5.1",
-    "eslint": "^8.45.0",
-    "eslint-config-prettier": "^9.0.0",
-    "eslint-plugin-prettier": "^5.0.0",
-    "jest": "^29.6.4",
-    "prettier": "^3.0.0",
-    "supertest": "^6.3.3",
-    "ts-jest": "^29.1.1",
-    "ts-node": "^10.9.1",
-    "typescript": "^5.1.6",
-    "husky": "^8.0.3",
-    "lint-staged": "^13.2.3"
+    "eslint": "^9.3.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.1.3",
+    "jest": "^29.7.0",
+    "prettier": "^3.2.5",
+    "supertest": "^6.3.4",
+    "ts-jest": "^29.1.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.5",
+    "rimraf": "^5.0.5",
+    "glob": "^10.3.10",
+    "lru-cache": "^10.1.0"
+  },
+  "overrides": {
+  "superagent": "^9.0.0" ,
+    "inflight": "^1.0.6",
+    "glob": "^10.3.10",
+    "rimraf": "^5.0.5"
   }
-}
-`;
+}`;
 }
 
 function tsconfigContent() {
   return `{
   "compilerOptions": {
-    "target": "ES2020",
-    "module": "CommonJS",
-    "outDir": "dist",
-    "rootDir": "src",
+    "target": "ES2022",
+    "module": "commonjs",
+    "outDir": "./dist",
+    "rootDir": "./src",
     "strict": true,
+    "moduleResolution": "node",
     "esModuleInterop": true,
     "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
-    }
+    },
+    "types": ["node", "jest"],
+    "allowJs": true,
+    "checkJs": true,
+    "noEmit": false,
+    "sourceMap": true,
+    "declaration": true,
+    "removeComments": false,
+    "allowSyntheticDefaultImports": true
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "**/*.spec.ts", "**/*.test.ts"]
-}
-`;
+  "exclude": [
+    "node_modules",
+    "dist",
+    "**/*.spec.ts",
+    "**/*.test.ts",
+    "**/__tests__/**"
+  ]
+}`;
 }
 
 function appTsContent() {
@@ -192,12 +219,17 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Health check endpoint
-app.get('/health', (req, res) => {
-  res.status(200).json({ status: 'OK' });
+interface HealthStatus {
+  status: string;
+}
+
+app.get('/health', (req: express.Request, res: express.Response<HealthStatus>) => {
+  const response: HealthStatus = { status: 'OK' };
+  res.status(200).json(response);
 });
 
 // Root endpoint
-app.get('/', (req, res) => {
+app.get('/', (req: express.Request, res: express.Response) => {
   res.send('Hello World!');
 });
 
@@ -415,163 +447,264 @@ function lintStagedConfigContent() {
 
 async function initializeGitRepo(projectPath) {
   try {
-    execSync('git init', {
+    execSync("git init", {
       cwd: projectPath,
-      stdio: 'inherit',
-      shell: true
+      stdio: "inherit",
+      shell: true,
     });
-    console.log('✅ Git repository initialized');
+    console.log("✅ Git repository initialized");
     return true;
   } catch (error) {
-    console.error('❌ Failed to initialize Git repository:', error.message);
+    console.error("❌ Failed to initialize Git repository:", error.message);
     return false;
+  }
+}
+
+function checkNodeVersion() {
+  const [major, minor] = process.versions.node.split('.').map(Number);
+  if (major < 14 || (major === 14 && minor < 18)) {
+    console.error('❌ Node.js 14.18.0 ou superior é necessário para superagent@9');
+    console.log('Versão atual:', process.versions.node);
+    process.exit(1);
   }
 }
 
 // Modifique a função installDependencies para:
 async function installDependencies(projectPath) {
   console.log('📦 Installing dependencies...');
+  checkNodeVersion();
   
   try {
-    // Primeiro inicializa o Git antes de instalar as dependências
-    const gitInitialized = await initializeGitRepo(projectPath);
-    
-    if (!gitInitialized) {
-      console.log('⚠️ Husky requires Git to be initialized. Skipping Husky setup.');
-      // Instala sem o prepare script para evitar erro do Husky
-      execSync('npm install --ignore-scripts', {
+    // Cria a estrutura do husky antecipadamente
+    const huskyDir = path.join(projectPath, '.husky');
+    if (!fs.existsSync(huskyDir)) {
+      fs.mkdirSync(huskyDir, { recursive: true });
+    }
+
+      // Create package-lock.json first
+      execSync("npm install --package-lock-only", {
         cwd: projectPath,
-        stdio: 'inherit',
-        shell: true
+        stdio: "inherit",
+        shell: true,
       });
-    } else {
-      // Instala normalmente se o Git foi inicializado
-      execSync('npm install', {
+
+      // Install all dependencies
+      execSync("npm install", {
+        cwd: projectPath,
+        stdio: "inherit",
+        shell: true,
+      });
+
+    // Configuração pós-instalação segura
+    try {
+      execSync('npx husky install', {
+        cwd: projectPath,
+        stdio: 'ignore'
+      });
+    } catch {
+      console.log('⚠️ Husky setup skipped (not available)');
+    }
+
+    console.log('✅ Dependencies installed successfully!');
+  } catch (error) {
+    console.error('❌ Failed to install dependencies:', error.message);
+    process.exit(1);
+  }
+}
+
+
+
+async function postInstallCheck(projectPath) {
+  try {
+    console.log('🔍 Running post-install checks...');
+    
+    // Create lockfile if missing
+    if (!fs.existsSync(path.join(projectPath, 'package-lock.json'))) {
+      execSync('npm install --package-lock-only', {
         cwd: projectPath,
         stdio: 'inherit',
         shell: true
       });
     }
-    
-    console.log('✅ Dependencies installed successfully!');
+
+    // Run audit
+    execSync('npm audit', {
+      cwd: projectPath,
+      stdio: 'inherit',
+      shell: true
+    });
+
+    console.log('✅ All checks passed!');
   } catch (error) {
-    console.error('❌ Failed to install dependencies:', error.message);
-    console.log('You can try installing manually with:');
-    console.log(`cd ${projectPath} && git init && npm install`);
+    console.log('⚠️ Found potential issues. Run "npm audit fix" to address them.');
   }
 }
-
 async function main() {
-  console.log('🚀 Backend project generator CLI with complete setup\n');
+  console.log("🚀 Backend project generator CLI with complete setup\n");
 
   const response = await prompts([
     {
-      type: 'text',
-      name: 'projectName',
-      message: 'Project name:',
-      validate: name => (name ? true : 'Project name is required'),
+      type: "text",
+      name: "projectName",
+      message: "Project name:",
+      validate: (name) => (name ? true : "Project name is required"),
     },
     {
-      type: 'select',
-      name: 'structure',
-      message: 'Choose the project structure:',
+      type: "select",
+      name: "structure",
+      message: "Choose the project structure:",
       choices: [
-        { title: 'Layer Based', value: 'layer' },
-        { title: 'Modular', value: 'modular' },
-        { title: 'DDD', value: 'ddd' },
+        { title: "Layer Based", value: "layer" },
+        { title: "Modular", value: "modular" },
+        { title: "DDD", value: "ddd" },
       ],
     },
   ]);
 
   if (!response.projectName) {
-    console.log('Aborted: Project name is required.');
+    console.log("Aborted: Project name is required.");
     process.exit(1);
   }
 
   const rootPath = path.resolve(process.cwd(), response.projectName);
 
   if (fs.existsSync(rootPath)) {
-    console.log(`Folder ${response.projectName} already exists. Choose another name or delete the folder.`);
+    console.log(
+      `Folder ${response.projectName} already exists. Choose another name or delete the folder.`
+    );
     process.exit(1);
   }
 
   // Create root directory and all necessary subdirectories
   fs.mkdirSync(rootPath);
-  fs.mkdirSync(path.join(rootPath, 'src'));
-  fs.mkdirSync(path.join(rootPath, 'src', 'config'));
-  fs.mkdirSync(path.join(rootPath, 'logs'));
-  fs.mkdirSync(path.join(rootPath, '.husky'), { recursive: true }); // Create .husky directory
+  fs.mkdirSync(path.join(rootPath, "src"));
+  fs.mkdirSync(path.join(rootPath, "src", "config"));
+  fs.mkdirSync(path.join(rootPath, "logs"));
+  fs.mkdirSync(path.join(rootPath, ".husky"), { recursive: true }); // Create .husky directory
 
   // Create structure folders and files
   switch (response.structure) {
-    case 'layer':
-      createFolderRecursive(path.join(rootPath, 'src'), layerBasedStructure);
+    case "layer":
+      createFolderRecursive(path.join(rootPath, "src"), layerBasedStructure);
       break;
-    case 'modular':
-      createFolderRecursive(path.join(rootPath, 'src'), modularStructure);
+    case "modular":
+      createFolderRecursive(path.join(rootPath, "src"), modularStructure);
       break;
-    case 'ddd':
-      createFolderRecursive(path.join(rootPath, 'src'), dddStructure);
+    case "ddd":
+      createFolderRecursive(path.join(rootPath, "src"), dddStructure);
       break;
     default:
       break;
   }
 
   // Create common files
-  createFileWithContent(path.join(rootPath, 'package.json'), packageJsonContent(response.projectName));
-  createFileWithContent(path.join(rootPath, 'tsconfig.json'), tsconfigContent());
-  createFileWithContent(path.join(rootPath, 'src', 'app.ts'), appTsContent());
-  createFileWithContent(path.join(rootPath, 'src', 'config', 'logger.ts'), loggerConfigContent());
-  createFileWithContent(path.join(rootPath, 'README.md'), `# ${response.projectName}\n\nGenerated by backend project generator CLI.`);
-  createFileWithContent(path.join(rootPath, 'Dockerfile'), dockerfileContent());
-  createFileWithContent(path.join(rootPath, 'docker-compose.yml'), dockerComposeContent());
-  createFileWithContent(path.join(rootPath, '.env'), envContent());
-  createFileWithContent(path.join(rootPath, '.eslintrc.json'), eslintConfigContent());
-  createFileWithContent(path.join(rootPath, '.eslintignore'), eslintIgnoreContent());
-  createFileWithContent(path.join(rootPath, '.prettierrc'), prettierConfigContent());
-  createFileWithContent(path.join(rootPath, '.prettierignore'), prettierIgnoreContent());
-  createFileWithContent(path.join(rootPath, 'jest.config.js'), jestConfigContent());
-  createFileWithContent(path.join(rootPath, '.husky', 'pre-commit'), huskyConfigContent());
-  createFileWithContent(path.join(rootPath, '.lintstagedrc.json'), lintStagedConfigContent());
+  createFileWithContent(
+    path.join(rootPath, "package.json"),
+    packageJsonContent(response.projectName)
+  );
+  createFileWithContent(
+    path.join(rootPath, "tsconfig.json"),
+    tsconfigContent()
+  );
+  createFileWithContent(path.join(rootPath, "src", "app.ts"), appTsContent());
+  createFileWithContent(
+    path.join(rootPath, "src", "config", "logger.ts"),
+    loggerConfigContent()
+  );
+  createFileWithContent(
+    path.join(rootPath, "README.md"),
+    `# ${response.projectName}\n\nGenerated by backend project generator CLI.`
+  );
+  createFileWithContent(path.join(rootPath, "Dockerfile"), dockerfileContent());
+  createFileWithContent(
+    path.join(rootPath, "docker-compose.yml"),
+    dockerComposeContent()
+  );
+  createFileWithContent(path.join(rootPath, ".env"), envContent());
+  createFileWithContent(
+    path.join(rootPath, ".eslintrc.json"),
+    eslintConfigContent()
+  );
+  createFileWithContent(
+    path.join(rootPath, ".eslintignore"),
+    eslintIgnoreContent()
+  );
+  createFileWithContent(
+    path.join(rootPath, ".prettierrc"),
+    prettierConfigContent()
+  );
+  createFileWithContent(
+    path.join(rootPath, ".prettierignore"),
+    prettierIgnoreContent()
+  );
+  createFileWithContent(
+    path.join(rootPath, "jest.config.js"),
+    jestConfigContent()
+  );
+  createFileWithContent(
+    path.join(rootPath, ".husky", "pre-commit"),
+    huskyConfigContent()
+  );
+  createFileWithContent(
+    path.join(rootPath, ".lintstagedrc.json"),
+    lintStagedConfigContent()
+  );
 
-  console.log(`\n✅ Project "${response.projectName}" created successfully with complete setup!`);
-    // Pergunta se deseja instalar as dependências
- try {
+  console.log(
+    `\n✅ Project "${response.projectName}" created successfully with complete setup!`
+  );
+  // Pergunta se deseja instalar as dependências
+  try {
     const { installDeps } = await prompts({
-      type: 'confirm',
-      name: 'installDeps',
-      message: 'Do you want to install dependencies now?',
-      initial: true
+      type: "confirm",
+      name: "installDeps",
+      message: "Do you want to install dependencies now?",
+      initial: true,
     });
 
     if (installDeps) {
-      installDependencies(rootPath);
-    } else {
-      console.log('You can install dependencies later by running:');
-      console.log(`cd ${response.projectName} && npm install`);
+      await installDependencies(rootPath);
+      await postInstallCheck(rootPath);
+
+      // Opcional: oferecer para corrigir automaticamente
+      const { fixIssues } = await prompts({
+        type: "confirm",
+        name: "fixIssues",
+        message: "Would you like to try fixing potential issues automatically?",
+        initial: false,
+      });
+
+      if (fixIssues) {
+        execSync("npm audit fix", {
+          cwd: rootPath,
+          stdio: "inherit",
+          shell: true,
+        });
+      }
     }
   } catch (error) {
-    console.error('Error during installation prompt:', error);
+    console.error("Installation error:", error.message);
   }
-  console.log('To get started:\n');
+  console.log("To get started:\n");
   console.log(`  cd ${response.projectName}`);
-  console.log('  npm install');
-  console.log('  npm run dev');
-  console.log('  npm test');
-  console.log('  npm run lint');
-  console.log('  npm run format');
-  console.log('\nFor Docker:\n');
-  console.log('  docker-compose build');
-  console.log('  docker-compose up\n');
-  console.log('The project includes:');
-  console.log('- Express with TypeScript');
-  console.log('- Environment variables (.env)');
-  console.log('- Jest testing setup');
-  console.log('- ESLint + Prettier');
-  console.log('- Winston logging');
-  console.log('- Docker support');
-  console.log('- Husky git hooks');
-  console.log('- Security middleware (helmet, cors)');
+  console.log("  npm install");
+  console.log("  npm run dev");
+  console.log("  npm test");
+  console.log("  npm run lint");
+  console.log("  npm run format");
+  console.log("\nFor Docker:\n");
+  console.log("  docker-compose build");
+  console.log("  docker-compose up\n");
+  console.log("The project includes:");
+  console.log("- Express with TypeScript");
+  console.log("- Environment variables (.env)");
+  console.log("- Jest testing setup");
+  console.log("- ESLint + Prettier");
+  console.log("- Winston logging");
+  console.log("- Docker support");
+  console.log("- Husky git hooks");
+  console.log("- Security middleware (helmet, cors)");
 }
 
 main();
+

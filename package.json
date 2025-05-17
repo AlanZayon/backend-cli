@@ -1,6 +1,7 @@
 {
   "name": "create-backend-cli",
   "version": "1.0.0",
+  "type": "module", 
   "description": "CLI to generate backend projects with Layer, Modular or DDD structure, plus Docker, ESLint, Prettier setup.",
   "bin": {
     "create-backend": "./bin/create-backend.js"
