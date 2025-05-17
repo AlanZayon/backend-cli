@@ -706,5 +706,20 @@ async function main() {
   console.log("- Security middleware (helmet, cors)");
 }
 
+export {
+  createFolderRecursive,
+  packageJsonContent,
+  tsconfigContent,
+  appTsContent,
+  initializeGitRepo,
+  installDependencies,
+  checkNodeVersion,
+  postInstallCheck,
+  createFileWithContent,
+  layerBasedStructure,
+  modularStructure,
+  dddStructure
+};
+
 main();
 
