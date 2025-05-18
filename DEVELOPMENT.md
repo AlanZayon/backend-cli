@@ -12,7 +12,7 @@ npm install
 
 ```bash
 npm link
-npm create-backend
+npm backend-genius
 ```
 
 ### 3. Run Tests

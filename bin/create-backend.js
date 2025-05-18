@@ -540,7 +540,10 @@ async function postInstallCheck(projectPath) {
   }
 }
 async function main() {
-  console.log("🚀 Backend project generator CLI with complete setup\n");
+console.log(`
+  🔥 Welcome to BACKEND ULTIMATE CLI
+Version 2.0 - Professional Template
+`);
 
   const response = await prompts([
     {

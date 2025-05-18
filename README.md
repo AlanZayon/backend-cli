@@ -23,7 +23,7 @@ A powerful command-line tool to scaffold production-ready Node.js/TypeScript bac
 
 ### As Global CLI Tool
 ```bash
-npm i -g create-backend-cli-xpto
+npm i -g create-backend-ultimate
 ```
 
 ### For Development
@@ -37,7 +37,7 @@ npm link  # Makes the CLI available globally during development
 ## Usage
 
 ```bash
-npx create-backend
+npx backend-genius
 ```
 
 Then follow the interactive prompts to:
