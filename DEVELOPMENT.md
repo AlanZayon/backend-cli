@@ -1,60 +1,62 @@
 # Backend Project Generator
 
-## 🛠️ Desenvolvimento
+## 🛠️ Development
 
-### 1. Instalação de Dependências
+### 1. Install Dependencies
 
-bash
+```bash
 npm install
+```
 
+### 2. Run in Development Mode
 
-### 2. Execução em Modo de Desenvolvimento
-
-bash
+```bash
 npm link
 backend-generator
+```
 
+### 3. Run Tests
 
-### 3. Executar Testes
-
-bash
+```bash
 npm test
+```
 
+### 4. Contributing
 
-### 4. Contribuição
-
-Para contribuir com o projeto, leia o arquivo [CONTRIBUTING.md](./CONTRIBUTING.md).
+To contribute to the project, please read the [CONTRIBUTING.md](./CONTRIBUTING.md) file.
 
 ---
 
-## 💡 Dicas de Implementação
+## 💡 Implementation Tips
 
-<!-- ### 🔹 Organização da Lógica
+<!-- ### 🔹 Logic Organization
 
-- Separe cada estrutura (layer, modular, DDD) em arquivos próprios  
-- Crie um sistema de templates bem organizado -->
+- Separate each structure (layer, modular, DDD) into its own files  
+- Create a well-organized template system -->
 
-### 🔹 Testes
+### 🔹 Testing
 
-- Adicione testes para cada função  
-- Teste a geração de estruturas e a criação de arquivos
+- Add tests for each function  
+- Test structure generation and file creation
 
-### 🔹 Documentação
+### 🔹 Documentation
 
-- Crie um arquivo ARCHITECTURE.md explicando as decisões técnicas  
-- Mantenha o CHANGELOG.md sempre atualizado
+- Create an ARCHITECTURE.md file explaining technical decisions  
+- Keep the CHANGELOG.md always updated
 
-### 🔹 Ferramentas de Qualidade
+### 🔹 Quality Tools
 
-bash
+```bash
 npm install --save-dev husky lint-staged
 npx husky install
-
+```
 
 ---
 
-## 📦 Arquivo .nvmrc
+## 📦 .nvmrc File
 
-Inclua um arquivo .nvmrc com o seguinte conteúdo para garantir a versão correta do Node.js:
+Include a .nvmrc file with the following content to ensure the correct Node.js version:
 
+```
 18.0.0
+``` 

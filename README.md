@@ -23,13 +23,13 @@ A powerful command-line tool to scaffold production-ready Node.js/TypeScript bac
 
 ### As Global CLI Tool
 ```bash
-npm install -g your-package-name
+npm i -g create-backend-cli-xpto
 ```
 
 ### For Development
 ```bash
-git clone https://github.com/your-repo/backend-generator.git
-cd backend-generator
+git clone https://github.com/AlanZayon/backend-cli.git
+cd backend-cli
 npm install
 npm link  # Makes the CLI available globally during development
 ```
@@ -37,7 +37,7 @@ npm link  # Makes the CLI available globally during development
 ## Usage
 
 ```bash
-backend-generator
+npx create create-backend
 ```
 
 Then follow the interactive prompts to:
