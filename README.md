@@ -37,7 +37,7 @@ npm link  # Makes the CLI available globally during development
 ## Usage
 
 ```bash
-npx create create-backend
+npx create-backend
 ```
 
 Then follow the interactive prompts to:

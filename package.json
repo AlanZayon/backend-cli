@@ -1,10 +1,10 @@
 {
-  "name": "create-backend-cli",
-  "version": "1.0.0",
+  "name": "create-backend-cli-xpto",
+  "version": "1.0.1",
   "type": "module",
   "description": "CLI to generate backend projects with Layer, Modular or DDD structure, plus Docker, ESLint, Prettier setup.",
   "bin": {
-    "create-backend": "./bin/create-backend.js"
+    "create-backend": "bin/create-backend.js"
   },
   "scripts": {
     "test": "NODE_OPTIONS=--experimental-vm-modules vitest"
