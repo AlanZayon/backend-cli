@@ -12,7 +12,7 @@ npm install
 
 ```bash
 npm link
-backend-generator
+npm create-backend
 ```
 
 ### 3. Run Tests
