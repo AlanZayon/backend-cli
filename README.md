@@ -37,7 +37,7 @@ npm link  # Makes the CLI available globally during development
 ## Usage
 
 ```bash
-npx backend-genius
+npx create-backend-ultimate@latest
 ```
 
 Then follow the interactive prompts to:
