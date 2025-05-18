@@ -1,6 +1,6 @@
 {
   "name": "create-backend-cli-xpto",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "type": "module",
   "description": "CLI to generate backend projects with Layer, Modular or DDD structure, plus Docker, ESLint, Prettier setup.",
   "bin": {
