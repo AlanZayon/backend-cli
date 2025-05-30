@@ -1,16 +1,19 @@
 # 🚀 Backend Project Generator CLI
 
-A powerful command-line tool to scaffold production-ready Node.js/TypeScript backend projects with different architectural patterns.
+A powerful command-line tool to scaffold production-ready backend projects using Node.js or NestJS with JavaScript or TypeScript, supporting multiple architectural patterns.
 
-## Features
+## ✨ Features
 
 - **Multiple Architecture Options**:
   - 🏗️ Layer-based (Traditional MVC)
   - 🧩 Modular (Feature-based)
   - 🏰 DDD (Domain-Driven Design)
 
+- **Technology Choices**:
+  - ✅ Express.js (JavaScript / TypeScript)
+  - ✅ NestJS (JavaScript / TypeScript)
+
 - **Complete Project Setup**:
-  - ✅ Express.js with TypeScript
   - ✅ Docker & Docker Compose ready
   - ✅ Pre-configured:
     - Winston logging
@@ -19,14 +22,16 @@ A powerful command-line tool to scaffold production-ready Node.js/TypeScript bac
     - Git hooks (Husky)
     - Environment variables
 
-## Installation
+## 📦 Installation
 
 ### As Global CLI Tool
+
 ```bash
 npm i -g create-backend-ultimate
 ```
 
 ### For Development
+
 ```bash
 git clone https://github.com/AlanZayon/backend-cli.git
 cd backend-cli
@@ -34,7 +39,7 @@ npm install
 npm link  # Makes the CLI available globally during development
 ```
 
-## Usage
+## ⚙️ Usage
 
 ```bash
 npx create-backend-ultimate@latest
@@ -43,29 +48,32 @@ npx create-backend-ultimate@latest
 Then follow the interactive prompts to:
 
 - Enter project name  
+- Choose backend framework (Node.js or NestJS)  
+- Choose language (JavaScript or TypeScript)  
 - Select architecture pattern  
-- Choose additional options  
+- Choose additional features  
 
-## What's Generated
+## 📁 What's Generated
 
 A complete backend project with:
 
 ```
 project-name/
 ├── src/
-│   ├── config/       # Environment and logger configs
-│   ├── controllers/  # Business logic handlers
-│   ├── routes/       # API endpoints
-│   └── app.ts        # Express application setup
-├── test/            # Test suites
-├── .env             # Environment variables
-├── Dockerfile       # Production container setup
-└── docker-compose.yml # Local development stack
+│   ├── config/         # Environment and logger configs
+│   ├── controllers/    # Business logic handlers
+│   ├── routes/         # API endpoints (Express)
+│   └── main.ts         # App entry point (Express or NestJS)
+├── test/               # Test suites
+├── .env                # Environment variables
+├── Dockerfile          # Production container setup
+└── docker-compose.yml  # Local development stack
 ```
 
-## Supported Architectures
+## 🏛️ Supported Architectures
 
-1. **Layer-Based**
+### 1. Layer-Based (MVC)
+
 ```
 src/
 ├── controllers/
@@ -75,7 +83,8 @@ src/
 └── routes/
 ```
 
-2. **Modular**
+### 2. Modular (Feature-based)
+
 ```
 src/
 └── modules/
@@ -85,7 +94,8 @@ src/
     └── product/
 ```
 
-3. **DDD (Domain-Driven Design)**
+### 3. Domain-Driven Design (DDD)
+
 ```
 src/
 ├── domain/
@@ -94,37 +104,37 @@ src/
 └── interfaces/
 ```
 
-## Development Setup for Contributors
+## 🛠️ Development Setup for Contributors
 
-- Fork the repository  
-- Install dependencies:
+1. Fork the repository  
+2. Install dependencies:
 
 ```bash
 npm install
 ```
 
-- Run tests:
+3. Run tests:
 
 ```bash
 npm test
 ```
 
-- Make your changes following our Contribution Guidelines
+4. Make your changes following our Contribution Guidelines
 
-## Why Use This Generator?
+## 💡 Why Use This Generator?
 
 - ⏱️ Saves 10+ hours of initial project setup  
 - 🛡️ Production-ready best practices out of the box  
 - 🔄 Consistent architecture across team projects  
 - 🔍 Testable structure from day one  
 
-## Roadmap
+## 🗺️ Roadmap
 
-- Add Nest.js option  
-- Support for GraphQL  
-- Database ORM integration  
-- Authentication templates  
+- ✅ Add NestJS option (JavaScript & TypeScript)
+- 🔜 Support for GraphQL  
+- 🔜 Database ORM integration  
+- 🔜 Authentication templates  
 
-## License
+## 📜 License
 
-MIT © Alan Zayon da Silva Maciel
+MIT © Alan Zayon da Silva Mac
